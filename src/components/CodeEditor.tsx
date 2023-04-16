@@ -4,13 +4,13 @@ import { highlight, languages } from "prismjs";
 import "prismjs/themes/prism.css";
 
 type CodeEditorProps = {
-  language: string;
+  language?: string;
   code: string;
   onCodeChange: (code: string) => void;
 };
 
 const CodeEditor = ({
-  language = "js",
+  language = "plain",
   code,
   onCodeChange,
 }: CodeEditorProps) => {
