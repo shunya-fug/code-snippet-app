@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   if (req.method === "GET") {
     const snippets = await prisma.codeSnippet.findMany();
     res.status(200).json(snippets);
