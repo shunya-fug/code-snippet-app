@@ -1,31 +1,69 @@
 import { CodeSnippet } from "@prisma/client";
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import {
+  Alert,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
+  Chip,
+  Snackbar,
+  Stack,
+} from "@mui/material";
+import { useState } from "react";
+import SnippetDialog from "./SnippetDialog";
+import SnippetDisplay from "./SnippetDisplay";
 
 type Props = {
   snippet: CodeSnippet;
 };
 
 export default function SnippetCard({ snippet }: Props) {
+  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const copyToClipboard = async () => {
+    await global.navigator.clipboard.writeText(snippet.code);
+    setOpen(true);
+  };
+
   return (
     <Card>
-      <CardHeader
-        title={snippet.title}
-        action={
-          <>
-            <Edit />
-            <Delete />
-          </>
-        }
+      <CardActionArea onClick={() => setDialogOpen(true)}>
+        {/* 言語 */}
+        <Stack alignItems="flex-end">
+          <Chip
+            label={snippet.language}
+            sx={{ borderRadius: 1 }}
+            size="small"
+          />
+        </Stack>
+
+        {/* タイトル */}
+        <CardHeader title={snippet.title} sx={{ py: 0 }} />
+      </CardActionArea>
+
+      {/* スニペット */}
+      <CardActionArea onClick={copyToClipboard}>
+        <CardContent sx={{ padding: 1 }}>
+          <SnippetDisplay snippet={snippet} />
+        </CardContent>
+      </CardActionArea>
+
+      {/* ダイアログ */}
+      <SnippetDialog
+        snippet={snippet}
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
       />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary">
-          {snippet.description}
-        </Typography>
-        <Typography variant="body1">{snippet.code}</Typography>
-        <Typography variant="caption">Language: {snippet.language}</Typography>
-        <Typography variant="caption">Tags: {snippet.tags}</Typography>
-      </CardContent>
+
+      {/* コピー時の表示 */}
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert>Copied to clipboard!</Alert>
+      </Snackbar>
     </Card>
   );
 }
