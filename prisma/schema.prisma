@@ -12,11 +12,22 @@ datasource db {
 
 model CodeSnippet {
   id          Int      @id @default(autoincrement())
+  /// @zod.string.min(1, { message: "min error" }).max(50, { message: "max error" })
   title       String
+  /// @zod.string.min(1, { message: "min error" }).max(1000, { message: "too long description" })
   description String?
+  /// @zod.string.min(1, { message: "min error" }).max(10000, { message: "too long code" })
   code        String
+  /// @zod.string.min(1, { message: "min error" }).max(50, { message: "max error" })
   language    String?
+  /// @zod.string.min(1, { message: "min error" }).max(100, { message: "max error" })
   tags        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+generator zod {
+  provider         = "zod-prisma-types"
+  output           = "../src/generated/schemas/zod"
+  createInputTypes = false
 }
