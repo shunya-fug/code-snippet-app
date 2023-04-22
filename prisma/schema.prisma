@@ -27,7 +27,6 @@ model CodeSnippet {
 }
 
 generator zod {
-  provider         = "zod-prisma-types"
-  output           = "../src/generated/schemas/zod"
-  createInputTypes = false
+  provider = "zod-prisma-types"
+  output   = "../src/generated/schemas/zod"
 }
