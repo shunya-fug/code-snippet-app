@@ -89,7 +89,7 @@ export default function SnippetDialog({ snippet, open, onClose }: Props) {
               sx={{ display: "flex", flexWrap: "wrap" }}
             >
               Tags:
-              {snippet.tags?.split(",").map((tag) => (
+              {snippet.tags.map((tag) => (
                 <Chip
                   label={tag}
                   key={tag}

@@ -148,14 +148,21 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
           <Controller
             name="tags"
             control={control}
+            defaultValue={[] as string[]}
             render={({ field, fieldState }) => (
               <Autocomplete
+                {...field}
                 multiple
-                options={[] as string[]}
+                options={[]}
+                value={field.value || []}
+                onChange={(_, value) => {
+                  field.onChange(value);
+                }}
                 freeSolo
                 renderTags={(value: readonly string[], getTagProps) =>
                   value.map((option: string, index: number) => (
                     <Chip
+                      size="small"
                       variant="outlined"
                       label={option}
                       {...getTagProps({ index })}
@@ -164,7 +171,6 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
                 }
                 renderInput={(params) => (
                   <TextField
-                    {...field}
                     {...params}
                     label="tags"
                     size="small"
