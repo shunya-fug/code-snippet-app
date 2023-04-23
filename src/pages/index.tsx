@@ -1,19 +1,20 @@
-import { useState, useEffect } from "react";
-import type { NextPage } from "next";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { CodeSnippet } from "@prisma/client";
+import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 
 import SnippetCard from "@/components/SnippetCard";
-import { useRouter } from "next/router";
+import SnippetRegisterDialog from "@/components/SnippetRegisterDialog";
 import Masonry from "@mui/lab/Masonry";
 
 const Home: NextPage = () => {
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
-
-  const router = useRouter();
+  /// SnippetRegisterDialogを表示するためのstateを定義する
+  const [openRegisterDialog, setOpenRegisterDialog] = useState(false);
 
   const handleAddButtonClick = () => {
-    router.push("/add");
+    /// SnippetRegisterDialogを表示する
+    setOpenRegisterDialog(true);
   };
 
   useEffect(() => {
@@ -28,9 +29,7 @@ const Home: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <Stack gap={2} margin={2}>
-        <Typography variant="h4" gutterBottom>
-          Code Snippets
-        </Typography>
+        <Typography variant="h4">Code Snippets</Typography>
         <Button
           variant="contained"
           color="primary"
@@ -44,6 +43,12 @@ const Home: NextPage = () => {
           ))}
         </Masonry>
       </Stack>
+
+      {/* スニペット登録ダイアログ */}
+      <SnippetRegisterDialog
+        open={openRegisterDialog}
+        onClose={() => setOpenRegisterDialog(false)}
+      />
     </Container>
   );
 };
