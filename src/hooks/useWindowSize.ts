@@ -22,5 +22,6 @@ export const getWindowSize = () => {
       return;
     }
   }, []);
+
   return windowSize;
 };
