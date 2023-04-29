@@ -1,6 +1,7 @@
 import theme from "@/theme";
 import { Typography } from "@mui/material";
 import { highlight, languages } from "prismjs";
+import loadLanguages from "prismjs/components/";
 import "prismjs/themes/prism.css";
 import { useRef } from "react";
 import {
@@ -37,9 +38,10 @@ const CodeEditor = ({
         {...rest}
         value={code}
         onValueChange={handleCodeChange}
-        highlight={(code) =>
-          highlight(code, languages[language], language as string)
-        }
+        highlight={(code) => {
+          loadLanguages([language]);
+          return highlight(code, languages[language], language as string);
+        }}
         padding={10}
         style={{
           fontFamily: theme.typography.fontFamily,

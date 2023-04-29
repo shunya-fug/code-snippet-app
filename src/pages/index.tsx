@@ -9,11 +9,15 @@ import Masonry from "@mui/lab/Masonry";
 
 const Home: NextPage = () => {
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
-  /// SnippetRegisterDialogを表示するためのstateを定義する
-  const [openRegisterDialog, setOpenRegisterDialog] = useState(false);
+  // SnippetRegisterDialogを表示するためのstateを定義する
+  const [openRegisterDialog, setOpenRegisterDialog] = useState(true);
+  // 入力フォーム(ダイアログ左側)の高さを取得するため、最初はダイアログを表示し、初回レンダリング時に閉じる
+  useEffect(() => {
+    setOpenRegisterDialog(false);
+  }, []);
 
   const handleAddButtonClick = () => {
-    /// SnippetRegisterDialogを表示する
+    // SnippetRegisterDialogを表示する
     setOpenRegisterDialog(true);
   };
 
