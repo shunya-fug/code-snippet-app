@@ -14,12 +14,12 @@ model CodeSnippet {
   id          Int      @id @default(autoincrement())
   /// @zod.string.min(1, { message: "min error" }).max(50, { message: "max error" })
   title       String
-  /// @zod.string.min(1, { message: "min error" }).max(1000, { message: "too long description" })
-  description String?
+  /// @zod.string.min(1, { message: "min error" }).max(50, { message: "max error" })
+  language    String
   /// @zod.string.min(1, { message: "min error" }).max(10000, { message: "too long code" })
   code        String
-  /// @zod.string.min(1, { message: "min error" }).max(50, { message: "max error" })
-  language    String?
+  /// @zod.string.min(1, { message: "min error" }).max(1000, { message: "too long description" })
+  description String?
   /// @zod.string.min(1, { message: "min error" }).max(20, { message: "Too long value." }).array(.max(7, { message: "You can set a maximum of 7 tags." }))
   tags        String[]
   createdAt   DateTime @default(now())
