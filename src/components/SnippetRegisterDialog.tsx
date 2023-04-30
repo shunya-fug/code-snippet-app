@@ -1,29 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Autocomplete,
   Button,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
-  TextField,
 } from "@mui/material";
 import {
-  langs,
   langNames,
+  langs,
   loadLanguage,
 } from "@uiw/codemirror-extensions-langs";
-import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import CodeMirror from "@uiw/react-codemirror";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
+// 自作コンポーネント等
 import { CodeSnippetCreateInputSchema } from "@/generated/schemas/zod";
-import { getWindowSize } from "@/hooks/getWindowSize";
+import { getWindowSize } from "@/hooks/useWindowSize";
 import theme from "@/theme";
+import RhfAutocompleteTextField from "./input/rhf/RhfAutocompleteTextField";
+import RhfCodeEditor from "./input/rhf/RhfCodeEditor";
+import RhfTagInput from "./input/rhf/RhfTagInput";
+import RhfTextField from "./input/rhf/RhfTextField";
 
 type Props = {
   open: boolean;
@@ -74,144 +74,56 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
         <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
           <Stack gap={1.5} my={1} ref={formRef}>
             {/* タイトル */}
-            <Controller
-              name="title"
-              control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  autoFocus
-                  margin="dense"
-                  id="title"
-                  label="Title"
-                  type="text"
-                  size="small"
-                  fullWidth
-                  sx={{ my: 0 }}
-                  error={fieldState.invalid}
-                  helperText={fieldState.error?.message}
-                />
-              )}
-            />
+            <RhfTextField name="title" label="Title" control={control} />
 
             {/* 言語 */}
-            <Controller
+            <RhfAutocompleteTextField
               name="language"
               control={control}
-              render={({ field, fieldState }) => (
-                <Autocomplete
-                  {...field}
-                  fullWidth
-                  freeSolo
-                  size="small"
-                  sx={{ my: 0 }}
-                  options={langNames}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="language"
-                      error={fieldState.invalid}
-                      helperText={fieldState.error?.message}
-                    />
-                  )}
-                  onChange={(_, value) => setValue("language", value)}
-                />
-              )}
+              options={langNames}
+              textFieldProps={{
+                label: "Language",
+              }}
+              autocompleteProps={{
+                onChange: (_, value) => setValue("language", value),
+              }}
             />
 
             {/* コードエディタ(画面サイズが小さい場合) */}
             {width < theme.breakpoints.values.sm && (
-              <Controller
+              <RhfCodeEditor
                 name="code"
                 control={control}
-                render={({ field, fieldState }) => (
-                  <CodeMirror
-                    {...field}
-                    theme={vscodeDark}
-                    extensions={[
-                      loadLanguage(watch("language")) || langs.json(),
-                    ]}
-                  />
-                )}
+                extensions={[loadLanguage(watch("language")) || langs.json()]}
               />
             )}
 
             {/* 説明 */}
-            <Controller
+            <RhfTextField
               name="description"
+              label="Description"
               control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  label="Description"
-                  size="small"
-                  fullWidth
-                  margin="normal"
-                  sx={{ my: 0 }}
-                  error={fieldState.invalid}
-                  helperText={fieldState.error?.message}
-                />
-              )}
             />
 
             {/* タグ */}
-            <Controller
+            <RhfTagInput
               name="tags"
               control={control}
-              defaultValue={[] as string[]}
-              render={({ field, fieldState }) => (
-                <Autocomplete
-                  {...field}
-                  multiple
-                  options={[]}
-                  value={field.value || []}
-                  onChange={(_, value) => {
-                    field.onChange(value);
-                  }}
-                  freeSolo
-                  renderTags={(value: readonly string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                      <Chip
-                        size="small"
-                        variant="outlined"
-                        label={option}
-                        {...getTagProps({ index })}
-                      />
-                    ))
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="tags"
-                      size="small"
-                      fullWidth
-                      margin="normal"
-                      sx={{ my: 0 }}
-                      error={fieldState.invalid}
-                      helperText={fieldState.error?.message}
-                    />
-                  )}
-                />
-              )}
+              options={[]}
+              textFieldProps={{
+                label: "Tags",
+              }}
             />
           </Stack>
 
           {theme.breakpoints.values.sm <= width && (
             <Stack flexGrow={1} alignSelf={"center"}>
               {/* コードエディタ(画面サイズが大きい場合) */}
-              <Controller
+              <RhfCodeEditor
                 name="code"
                 control={control}
-                render={({ field, fieldState }) => (
-                  <CodeMirror
-                    {...field}
-                    theme={vscodeDark}
-                    height={`${editorHeight}px`}
-                    extensions={[
-                      loadLanguage(watch("language")) || langs.json(),
-                    ]}
-                  />
-                )}
+                height={`${editorHeight}px`}
+                extensions={[loadLanguage(watch("language")) || langs.json()]}
               />
             </Stack>
           )}
