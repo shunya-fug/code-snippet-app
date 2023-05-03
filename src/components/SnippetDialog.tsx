@@ -1,4 +1,3 @@
-import { CodeSnippet } from "@prisma/client";
 import {
   Alert,
   Card,
@@ -15,7 +14,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Edit, Delete } from "@mui/icons-material";
+
 import SnippetDisplay from "./SnippetDisplay";
+import type { CodeSnippet } from "@/generated/schemas/orval";
 
 type Props = {
   snippet: CodeSnippet;

@@ -1,6 +1,7 @@
-import { CodeSnippet } from "@prisma/client";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monokaiSublime } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+
+import type { CodeSnippet } from "@/generated/schemas/orval";
 
 interface Props {
   snippet: CodeSnippet;

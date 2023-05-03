@@ -1,15 +1,28 @@
-import { Button, Container, Stack, Typography } from "@mui/material";
-import { CodeSnippet } from "@prisma/client";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  CircularProgress,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import SnippetCard from "@/components/SnippetCard";
 import SnippetRegisterDialog from "@/components/SnippetRegisterDialog";
 import Masonry from "@mui/lab/Masonry";
-import axios from "axios";
+import {
+  getApiSnippets,
+  getGetApiSnippetsQueryKey,
+} from "@/generated/api/snippets/snippets";
+import { CodeSnippet } from "@/generated/schemas/orval";
+import { AxiosResponse } from "axios";
 
 const Home: NextPage = () => {
-  const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
+  // const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
   // SnippetRegisterDialogを表示するためのstateを定義する
   const [openRegisterDialog, setOpenRegisterDialog] = useState(true);
   // 入力フォーム(ダイアログ左側)の高さを取得するため、最初はダイアログを表示し、初回レンダリング時に閉じる
@@ -17,34 +30,22 @@ const Home: NextPage = () => {
     setOpenRegisterDialog(false);
   }, []);
 
+  // SnippetRegisterDialogを表示する
   const handleAddButtonClick = () => {
-    // SnippetRegisterDialogを表示する
     setOpenRegisterDialog(true);
   };
 
   // スニペット一覧を取得する
-  const fetchSnippets = async () => {
-    try {
-      const res = await axios.get<CodeSnippet[]>(
-        "http://localhost:3000/api/snippets"
-      );
-      setSnippets(res.data);
-    } catch (err) {
-      console.error("【スニペット一覧取得エラー】", err);
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetchSnippets();
-    };
-    fetchData();
-  }, []);
+  const { data, isLoading, isError, error } = useQuery(
+    getGetApiSnippetsQueryKey(),
+    getApiSnippets
+  );
 
   return (
     <Container maxWidth="lg">
       <Stack gap={2} margin={2}>
         <Typography variant="h4">Code Snippets</Typography>
+        {/* スニペット登録ボタン */}
         <Button
           variant="contained"
           color="primary"
@@ -52,11 +53,31 @@ const Home: NextPage = () => {
         >
           Add New Snippet
         </Button>
-        <Masonry columns={{ xs: 1, md: 2, lg: 3 }} spacing={2}>
-          {snippets.map((snippet: CodeSnippet) => (
-            <SnippetCard key={snippet.id} snippet={snippet} />
-          ))}
-        </Masonry>
+
+        {/* APIエラー発生時 */}
+        {isError && (
+          <Alert severity="error">
+            <AlertTitle>データ取得エラー</AlertTitle>
+            {/* {error?.message} */}
+          </Alert>
+        )}
+
+        {/* スニペット一覧 */}
+        {isLoading ? (
+          // データ取得中
+          <Stack alignItems={"center"}>
+            <CircularProgress />
+          </Stack>
+        ) : (
+          // データ取得完了
+          <Masonry columns={{ xs: 1, md: 2, lg: 3 }} spacing={2}>
+            {(data as AxiosResponse<CodeSnippet[], any>).data.map(
+              (snippet: CodeSnippet) => (
+                <SnippetCard key={snippet.id} snippet={snippet} />
+              )
+            )}
+          </Masonry>
+        )}
       </Stack>
 
       {/* スニペット登録ダイアログ */}

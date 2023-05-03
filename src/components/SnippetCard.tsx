@@ -1,4 +1,3 @@
-import { CodeSnippet } from "@prisma/client";
 import {
   Alert,
   Card,
@@ -10,6 +9,8 @@ import {
   Stack,
 } from "@mui/material";
 import { useState } from "react";
+
+import type { CodeSnippet } from "@/generated/schemas/orval";
 import SnippetDialog from "./SnippetDialog";
 import SnippetDisplay from "./SnippetDisplay";
 
