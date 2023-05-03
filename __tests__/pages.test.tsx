@@ -1,11 +1,12 @@
 import { CodeSnippet } from "@prisma/client";
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "cross-fetch/polyfill";
 
 import Home from "@/pages";
 
 import axios from "axios";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 jest.mock("axios");
 
 const push = jest.fn();
@@ -22,6 +23,16 @@ jest.mock("next/router", () => {
 });
 
 describe("index", () => {
+  // 画面表示
+  const rendering = () => {
+    const queryClient = new QueryClient();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
+    );
+  };
+
   describe("一覧画面", () => {
     let mockData: CodeSnippet[];
 
@@ -54,8 +65,10 @@ describe("index", () => {
       (axios.get as jest.Mock).mockResolvedValueOnce({
         data: mockData,
       });
-      render(<Home />);
+
+      rendering();
     });
+
     it("スニペット一覧が正常に表示される", async () => {
       const title1 = await screen.findByText("title1");
       const title2 = await screen.findByText("title2");
@@ -73,7 +86,9 @@ describe("index", () => {
     /// スニペット登録ダイアログを開く
     const openDialog = async () => {
       const button = await screen.findByText("Add New Snippet");
-      await userEvent.click(button);
+      act(() => {
+        fireEvent.click(button);
+      });
     };
 
     beforeEach(async () => {
@@ -83,7 +98,7 @@ describe("index", () => {
         data: [],
       });
 
-      render(<Home />);
+      rendering();
       await openDialog();
     });
 
@@ -95,7 +110,9 @@ describe("index", () => {
     it("ダイアログを閉じることが出来る", async () => {
       // ダイアログを閉じる
       const cancelButton = screen.getByRole("button", { name: "Cancel" });
-      await userEvent.click(cancelButton);
+      act(() => {
+        fireEvent.click(cancelButton);
+      });
       // ダイアログがアニメーションで閉じるのを待つ
       await new Promise((r) => setTimeout(r, 500));
       // ダイアログ要素がないことを確認する
