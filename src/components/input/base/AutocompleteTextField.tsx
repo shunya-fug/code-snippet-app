@@ -1,6 +1,6 @@
+// AutoCompleteTextField.tsx
+import React from "react";
 import { Autocomplete, AutocompleteProps } from "@mui/material";
-
-// 自作コンポーネント等
 import TextField, { TextFieldProps } from "./TextField";
 
 export type AutoCompleteTextFieldProps<T> = {
@@ -12,22 +12,21 @@ export type AutoCompleteTextFieldProps<T> = {
   >;
 };
 
-const AutoCompleteTextField = <T,>({
-  options,
-  textFieldProps,
-  autocompleteProps,
-}: AutoCompleteTextFieldProps<T>) => {
+const AutoCompleteTextField = React.forwardRef<
+  HTMLInputElement,
+  AutoCompleteTextFieldProps<any>
+>(({ options, textFieldProps, autocompleteProps }, ref) => {
   return (
     <Autocomplete
       freeSolo
       size="small"
       options={options}
       renderInput={(params) => (
-        <TextField {...params} autoFocus {...textFieldProps} />
+        <TextField {...params} autoFocus {...textFieldProps} ref={ref} /> // inputRef を追加
       )}
       {...autocompleteProps}
     />
   );
-};
+});
 
 export default AutoCompleteTextField;

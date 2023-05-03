@@ -34,6 +34,7 @@ const RhfAutocompleteTextField = <T extends FieldValues, U>({
         helperText: error?.message,
         ...textFieldProps,
       }}
+      ref={field.ref}
     />
   );
 };

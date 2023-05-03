@@ -36,6 +36,7 @@ const RhfTagInput = <T extends FieldValues, U extends string>({
         helperText: error?.message,
         ...textFieldProps,
       }}
+      ref={field.ref}
     />
   );
 };
