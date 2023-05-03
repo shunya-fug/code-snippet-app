@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SnippetCard from "@/components/SnippetCard";
 import SnippetRegisterDialog from "@/components/SnippetRegisterDialog";
 import Masonry from "@mui/lab/Masonry";
+import axios from "axios";
 
 const Home: NextPage = () => {
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
@@ -21,13 +22,23 @@ const Home: NextPage = () => {
     setOpenRegisterDialog(true);
   };
 
+  // スニペット一覧を取得する
+  const fetchSnippets = async () => {
+    try {
+      const res = await axios.get<CodeSnippet[]>(
+        "http://localhost:3000/api/snippets"
+      );
+      setSnippets(res.data);
+    } catch (err) {
+      console.error("【スニペット一覧取得エラー】", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchSnippets = async () => {
-      const res = await fetch("/api/snippets");
-      const data = await res.json();
-      setSnippets(data);
+    const fetchData = async () => {
+      await fetchSnippets();
     };
-    fetchSnippets();
+    fetchData();
   }, []);
 
   return (
