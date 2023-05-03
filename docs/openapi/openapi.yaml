@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: Snippets API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: develop
+
+tags:
+  - name: Snippets
+
+paths:
+  /api/snippets:
+    $ref: "./paths/snippets.yaml#/snippets"
+
+components:
+  schemas:
+    CodeSnippet:
+      $ref: "./components/schemas/CodeSnippet.yaml#/CodeSnippet"

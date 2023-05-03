@@ -1,0 +1,31 @@
+snippets:
+  get:
+    summary: Retrieve a list of code snippets
+    tags:
+      - Snippets
+    responses:
+      "200":
+        description: A list of code snippets
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
+  post:
+    summary: Create a new code snippet
+    tags:
+      - Snippets
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
+    responses:
+      "200":
+        description: Successfully created code snippet
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
