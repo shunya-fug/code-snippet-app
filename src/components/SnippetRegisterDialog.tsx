@@ -21,7 +21,7 @@ import {
   getGetApiSnippetsQueryKey,
   postApiSnippets,
 } from "@/generated/api/snippets/snippets";
-import { CodeSnippetCreateInputSchema } from "@/generated/schemas/zod";
+import { SnippetCreateInputSchema } from "@/generated/schemas/zod";
 import { getWindowSize } from "@/hooks/useWindowSize";
 import theme from "@/theme";
 import RhfAutocompleteTextField from "./input/rhf/RhfAutocompleteTextField";
@@ -51,7 +51,7 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
 
   // フォームのバリデーション
   const { control, handleSubmit, reset, watch, setValue } = useForm({
-    resolver: zodResolver(CodeSnippetCreateInputSchema),
+    resolver: zodResolver(SnippetCreateInputSchema),
   });
 
   // ダイアログを閉じる際は入力内容をリセットする

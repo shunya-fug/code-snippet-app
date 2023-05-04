@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
+import { Snippet } from "@/generated/prisma";
+
 const prisma = new PrismaClient();
 
 export default async function handler(
@@ -13,7 +15,7 @@ export default async function handler(
   } else if (req.method === "POST") {
     const { title, description, code, language, tags } = req.body;
     const snippet = await prisma.codeSnippet.create({
-      data: { title, description, code, language, tags },
+      data: <Snippet>{ title, description, code, language, tags },
     });
     res.status(200).json(snippet);
   } else {
