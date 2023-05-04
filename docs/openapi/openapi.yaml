@@ -17,4 +17,4 @@ paths:
 components:
   schemas:
     CodeSnippet:
-      $ref: "./components/schemas/CodeSnippet.yaml#/CodeSnippet"
+      $ref: "./components/schemas/Snippet.yaml#/Snippet"

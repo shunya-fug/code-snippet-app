@@ -11,7 +11,7 @@ snippets:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
+                $ref: "../components/schemas/Snippet.yaml#/Snippet"
   post:
     summary: Create a new code snippet
     tags:
@@ -21,11 +21,11 @@ snippets:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
+            $ref: "../components/schemas/Snippet.yaml#/Snippet"
     responses:
       "200":
         description: Successfully created code snippet
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/CodeSnippet.yaml#/CodeSnippet"
+              $ref: "../components/schemas/Snippet.yaml#/Snippet"

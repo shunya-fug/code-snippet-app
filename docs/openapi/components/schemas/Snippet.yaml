@@ -1,4 +1,4 @@
-CodeSnippet:
+Snippet:
   type: object
   required:
     - title
