@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "orval": "orval --config ./orval.config.ts"
+    "orval": "orval --config ./orval.config.ts",
+    "ts-node": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
