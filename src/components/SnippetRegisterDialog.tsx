@@ -7,16 +7,20 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   langNames,
   langs,
   loadLanguage,
 } from "@uiw/codemirror-extensions-langs";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // 自作コンポーネント等
+import {
+  getGetApiSnippetsQueryKey,
+  postApiSnippets,
+} from "@/generated/api/snippets/snippets";
 import { CodeSnippetCreateInputSchema } from "@/generated/schemas/zod";
 import { getWindowSize } from "@/hooks/useWindowSize";
 import theme from "@/theme";
@@ -57,13 +61,15 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
   };
 
   // 登録ボタンがクリックされたときの処理
-  const handleRegisterButtonClicked = async (data: any) => {
-    try {
-      await axios.post("/api/snippets", data);
-    } catch (error) {
-      console.error(error);
-    }
-
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(postApiSnippets, {
+    onSuccess: () => {
+      // 登録成功時はスニペット一覧を再取得する
+      queryClient.invalidateQueries(getGetApiSnippetsQueryKey());
+    },
+  });
+  const handleRegisterButtonClicked = (data: any) => {
+    mutate(data);
     onCloseThisDialog();
   };
 

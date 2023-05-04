@@ -1,3 +1,4 @@
+import Masonry from "@mui/lab/Masonry";
 import {
   Alert,
   AlertTitle,
@@ -7,22 +8,26 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 
 import SnippetCard from "@/components/SnippetCard";
 import SnippetRegisterDialog from "@/components/SnippetRegisterDialog";
-import Masonry from "@mui/lab/Masonry";
 import {
   getApiSnippets,
   getGetApiSnippetsQueryKey,
 } from "@/generated/api/snippets/snippets";
 import { CodeSnippet } from "@/generated/schemas/orval";
-import { AxiosResponse } from "axios";
 
 const Home: NextPage = () => {
-  // const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
+  // スニペット一覧を取得する
+  const { data, isLoading, isError, error } = useQuery(
+    getGetApiSnippetsQueryKey(),
+    getApiSnippets
+  );
+
   // SnippetRegisterDialogを表示するためのstateを定義する
   const [openRegisterDialog, setOpenRegisterDialog] = useState(true);
   // 入力フォーム(ダイアログ左側)の高さを取得するため、最初はダイアログを表示し、初回レンダリング時に閉じる
@@ -34,12 +39,6 @@ const Home: NextPage = () => {
   const handleAddButtonClick = () => {
     setOpenRegisterDialog(true);
   };
-
-  // スニペット一覧を取得する
-  const { data, isLoading, isError, error } = useQuery(
-    getGetApiSnippetsQueryKey(),
-    getApiSnippets
-  );
 
   return (
     <Container maxWidth="lg">
