@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
-import { PrismaClient, Snippet } from "@/generated/prisma";
+import { PrismaClient, Prisma } from "@prisma/client";
+import { Snippet } from "@/generated/schemas/orval/components-schemas-Snippet";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient();
 
@@ -12,9 +14,23 @@ export default async function handler(
     const snippets = await prisma.snippet.findMany();
     res.status(200).json(snippets);
   } else if (req.method === "POST") {
-    const { title, description, code, language, tags } = req.body;
+    // セッション確認
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+
+    const { title, description, code, language, tags }: Snippet = req.body;
     const snippet = await prisma.snippet.create({
-      data: <Snippet>{ title, description, code, language, tags },
+      data: {
+        userId: session.user?.id || "",
+        title,
+        language,
+        code,
+        description,
+        tags,
+      },
     });
     res.status(200).json(snippet);
   } else {
