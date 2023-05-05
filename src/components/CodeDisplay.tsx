@@ -11,6 +11,7 @@ interface Props {
 /**
  * スニペットのコードをシンタックスハイライトして表示する
  */
+const CodeDisplay = ({ snippet }: Props) => {
   return (
     <SyntaxHighlighter
       language={snippet.language || "plain"}
@@ -23,3 +24,4 @@ interface Props {
   );
 };
 
+export default CodeDisplay;

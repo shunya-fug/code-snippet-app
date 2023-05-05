@@ -11,8 +11,8 @@ import {
   Stack,
 } from "@mui/material";
 
+import CodeDisplay from "./CodeDisplay";
 import SnippetDialog from "./SnippetDialog";
-import SnippetDisplay from "./SnippetDisplay";
 
 import type { CodeSnippet } from "@/generated/schemas/orval";
 
@@ -48,7 +48,7 @@ export default function SnippetCard({ snippet }: Props) {
       {/* スニペット */}
       <CardActionArea onClick={copyToClipboard}>
         <CardContent sx={{ padding: 1 }}>
-          <SnippetDisplay snippet={snippet} />
+          <CodeDisplay snippet={snippet} />
         </CardContent>
       </CardActionArea>
 

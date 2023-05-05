@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import SnippetDisplay from "./SnippetDisplay";
+import SnippetDisplay from "./CodeDisplay";
 
 import type { CodeSnippet } from "@/generated/schemas/orval";
 
