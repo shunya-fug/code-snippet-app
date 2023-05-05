@@ -11,6 +11,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import type { NextPage } from "next";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import SnippetCard from "@/components/SnippetCard";
@@ -22,6 +23,9 @@ import {
 import { CodeSnippet } from "@/generated/schemas/orval";
 
 const Home: NextPage = () => {
+  // ログイン状態を取得する
+  const { data: session, status } = useSession();
+
   // スニペット一覧を取得する
   const { data, isLoading, isError, error } = useQuery(
     getGetApiSnippetsQueryKey(),
@@ -42,48 +46,62 @@ const Home: NextPage = () => {
 
   return (
     <Container maxWidth="lg">
-      <Stack gap={2} margin={2}>
-        <Typography variant="h4">Code Snippets</Typography>
-        {/* スニペット登録ボタン */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddButtonClick}
-        >
-          Add New Snippet
+      {/* 未ログイン時 */}
+      {!session && (
+        <Button variant="contained" color="primary" onClick={() => signIn()}>
+          Sign In
         </Button>
+      )}
 
-        {/* APIエラー発生時 */}
-        {isError && (
-          <Alert severity="error">
-            <AlertTitle>データ取得エラー</AlertTitle>
-            {/* {error?.message} */}
-          </Alert>
-        )}
+      {/* ログイン時 */}
+      {session && (
+        <>
+          {session.user?.name}
+          {session.user?.id}
+          <Stack gap={2} margin={2}>
+            <Typography variant="h4">Code Snippets</Typography>
+            {/* スニペット登録ボタン */}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddButtonClick}
+            >
+              Add New Snippet
+            </Button>
 
-        {/* スニペット一覧 */}
-        {isLoading ? (
-          // データ取得中
-          <Stack alignItems={"center"}>
-            <CircularProgress />
-          </Stack>
-        ) : (
-          // データ取得完了
-          <Masonry columns={{ xs: 1, md: 2, lg: 3 }} spacing={2}>
-            {(data as AxiosResponse<CodeSnippet[], any>).data.map(
-              (snippet: CodeSnippet) => (
-                <SnippetCard key={snippet.id} snippet={snippet} />
-              )
+            {/* APIエラー発生時 */}
+            {isError && (
+              <Alert severity="error">
+                <AlertTitle>データ取得エラー</AlertTitle>
+                {/* {error?.message} */}
+              </Alert>
             )}
-          </Masonry>
-        )}
-      </Stack>
 
-      {/* スニペット登録ダイアログ */}
-      <SnippetRegisterDialog
-        open={openRegisterDialog}
-        onClose={() => setOpenRegisterDialog(false)}
-      />
+            {/* スニペット一覧 */}
+            {isLoading ? (
+              // データ取得中
+              <Stack alignItems={"center"}>
+                <CircularProgress />
+              </Stack>
+            ) : (
+              // データ取得完了
+              <Masonry columns={{ xs: 1, md: 2, lg: 3 }} spacing={2}>
+                {(data as AxiosResponse<CodeSnippet[], any>).data.map(
+                  (snippet: CodeSnippet) => (
+                    <SnippetCard key={snippet.id} snippet={snippet} />
+                  )
+                )}
+              </Masonry>
+            )}
+          </Stack>
+
+          {/* スニペット登録ダイアログ */}
+          <SnippetRegisterDialog
+            open={openRegisterDialog}
+            onClose={() => setOpenRegisterDialog(false)}
+          />
+        </>
+      )}
     </Container>
   );
 };
