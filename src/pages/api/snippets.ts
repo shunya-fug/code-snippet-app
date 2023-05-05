@@ -1,7 +1,9 @@
+import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma } from "@prisma/client";
-import { Snippet } from "@/generated/schemas/orval/components-schemas-Snippet";
 import { getServerSession } from "next-auth";
+
+import { Snippet } from "@/generated/schemas/orval/components-schemas-Snippet";
+
 import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient();

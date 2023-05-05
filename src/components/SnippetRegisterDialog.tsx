@@ -1,3 +1,6 @@
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -13,8 +16,6 @@ import {
   langs,
   loadLanguage,
 } from "@uiw/codemirror-extensions-langs";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 
 // 自作コンポーネント等
 import {
@@ -22,8 +23,9 @@ import {
   postApiSnippets,
 } from "@/generated/api/snippets/snippets";
 import { SnippetCreateWithoutUserInputSchema } from "@/generated/schemas/zod";
-import { getWindowSize } from "@/hooks/useWindowSize";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import theme from "@/theme";
+
 import RhfAutocompleteTextField from "./input/rhf/RhfAutocompleteTextField";
 import RhfCodeEditor from "./input/rhf/RhfCodeEditor";
 import RhfTagInput from "./input/rhf/RhfTagInput";
@@ -40,7 +42,7 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
   // 画面小さい：全入力フォームを縦に表示
   // 画面大きい：エディタを横に表示
   // エディタを横に表示する際、高さは左側の入力フォームの高さに合わせる
-  const { width } = getWindowSize();
+  const { width } = useWindowSize();
   const formRef = useRef<HTMLDivElement>(null);
   const [editorHeight, setEditorHeight] = useState(0);
   useEffect(() => {

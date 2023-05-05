@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import Masonry from "@mui/lab/Masonry";
 import {
   Alert,
@@ -10,17 +12,18 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import type { NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 import SnippetCard from "@/components/SnippetCard";
 import SnippetRegisterDialog from "@/components/SnippetRegisterDialog";
+
 import {
   getApiSnippets,
   getGetApiSnippetsQueryKey,
 } from "@/generated/api/snippets/snippets";
 import { CodeSnippet } from "@/generated/schemas/orval";
+
+import type { NextPage } from "next";
 
 const Home: NextPage = () => {
   // ログイン状態を取得する
@@ -56,8 +59,6 @@ const Home: NextPage = () => {
       {/* ログイン時 */}
       {session && (
         <>
-          {session.user?.name}
-          {session.user?.id}
           <Stack gap={2} margin={2}>
             <Typography variant="h4">Code Snippets</Typography>
             {/* スニペット登録ボタン */}

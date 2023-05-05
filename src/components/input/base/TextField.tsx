@@ -1,8 +1,9 @@
+import React from "react";
+
 import {
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
 } from "@mui/material";
-import React from "react";
 
 export type TextFieldProps = {} & MuiTextFieldProps;
 
@@ -21,5 +22,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     );
   }
 );
+
+TextField.displayName = "TextField";
 
 export default TextField;

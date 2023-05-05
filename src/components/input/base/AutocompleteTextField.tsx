@@ -1,6 +1,7 @@
-// AutoCompleteTextField.tsx
 import React from "react";
+
 import { Autocomplete, AutocompleteProps } from "@mui/material";
+
 import TextField, { TextFieldProps } from "./TextField";
 
 export type AutoCompleteTextFieldProps<T> = {
@@ -28,5 +29,7 @@ const AutoCompleteTextField = React.forwardRef<
     />
   );
 });
+
+AutoCompleteTextField.displayName = "AutoCompleteTextField";
 
 export default AutoCompleteTextField;

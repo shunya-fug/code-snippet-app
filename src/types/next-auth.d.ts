@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultUser } from "next-auth";
 
 /**
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation

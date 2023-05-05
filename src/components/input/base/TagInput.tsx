@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Chip } from "@mui/material";
 
 import AutoCompleteTextField, {
@@ -15,14 +16,18 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps<any>>(
         autocompleteProps={{
           multiple: true,
           renderTags: (value: readonly string[], getTagProps) =>
-            value.map((option: string, index: number) => (
-              <Chip
-                size="small"
-                variant="outlined"
-                label={option}
-                {...getTagProps({ index })}
-              />
-            )),
+            value.map((option: string, index: number) => {
+              const { key, ...tagProps } = getTagProps({ index });
+              return (
+                <Chip
+                  key={key}
+                  size="small"
+                  variant="outlined"
+                  label={option}
+                  {...tagProps}
+                />
+              );
+            }),
           ref: ref,
           ...autocompleteProps,
         }}
@@ -31,5 +36,7 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps<any>>(
     );
   }
 );
+
+TagInput.displayName = "TagInput";
 
 export default TagInput;

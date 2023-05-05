@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Alert,
   Card,
@@ -8,11 +10,11 @@ import {
   Snackbar,
   Stack,
 } from "@mui/material";
-import { useState } from "react";
 
-import type { CodeSnippet } from "@/generated/schemas/orval";
 import SnippetDialog from "./SnippetDialog";
 import SnippetDisplay from "./SnippetDisplay";
+
+import type { CodeSnippet } from "@/generated/schemas/orval";
 
 type Props = {
   snippet: CodeSnippet;
