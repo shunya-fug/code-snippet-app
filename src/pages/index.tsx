@@ -42,7 +42,9 @@ const Home: NextPage = () => {
     setOpenRegisterDialog(false);
   }, []);
 
-  // SnippetRegisterDialogを表示する
+  /**
+   * スニペット登録ダイアログを表示
+   */
   const handleAddButtonClick = () => {
     setOpenRegisterDialog(true);
   };

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+/**
+ * ウィンドウサイズを取得する
+ */
 export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
     width: 0,

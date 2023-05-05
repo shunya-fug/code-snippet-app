@@ -17,7 +17,6 @@ import {
   loadLanguage,
 } from "@uiw/codemirror-extensions-langs";
 
-// 自作コンポーネント等
 import {
   getGetApiSnippetsQueryKey,
   postApiSnippets,
@@ -36,7 +35,9 @@ type Props = {
   onClose: () => void;
 };
 
-/// スニペット登録ダイアログ
+/**
+ * スニペット登録ダイアログ
+ */
 const SnippetRegisterDialog = ({ open, onClose }: Props) => {
   // レイアウト調整
   // 画面小さい：全入力フォームを縦に表示
@@ -70,6 +71,11 @@ const SnippetRegisterDialog = ({ open, onClose }: Props) => {
       queryClient.invalidateQueries(getGetApiSnippetsQueryKey());
     },
   });
+  /**
+   * データを登録してダイアログを閉じる
+   *
+   * @param data 登録するスニペットのデータ
+   */
   const handleRegisterButtonClicked = (data: any) => {
     mutate(data);
     onCloseThisDialog();

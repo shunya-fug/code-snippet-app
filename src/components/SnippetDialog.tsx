@@ -26,11 +26,15 @@ type Props = {
   onClose: () => void;
 };
 
+/**
+ * スニペット表示ダイアログ
+ */
 export default function SnippetDialog({ snippet, open, onClose }: Props) {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
 
-  /// スニペットをクリップボードにコピーする
-  /// コピー時にスナックバーを表示する
+  /**
+   * スニペットをクリップボードにコピーし、スナックバーを表示する
+   */
   const copyToClipboard = async () => {
     await global.navigator.clipboard.writeText(snippet.code);
     setSnackBarOpen(true);

@@ -8,7 +8,9 @@ interface Props {
   snippet: CodeSnippet;
 }
 
-const SnippetDisplay = ({ snippet }: Props) => {
+/**
+ * スニペットのコードをシンタックスハイライトして表示する
+ */
   return (
     <SyntaxHighlighter
       language={snippet.language || "plain"}
@@ -21,4 +23,3 @@ const SnippetDisplay = ({ snippet }: Props) => {
   );
 };
 
-export default SnippetDisplay;
