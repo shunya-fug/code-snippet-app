@@ -1,14 +1,19 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider         = "zod-prisma-types"
+  output           = "../src/generated/schemas/zod"
+  useMultipleFiles = true
 }
 
 model Snippet {
@@ -23,8 +28,10 @@ model Snippet {
   description String?
   /// @zod.string.min(1, { message: "min error" }).max(20, { message: "Too long value." }).array(.max(7, { message: "You can set a maximum of 7 tags." }))
   tags        String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("snippets")
 }
 
 generator zod {
