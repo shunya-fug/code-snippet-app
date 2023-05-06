@@ -23,9 +23,9 @@ import {
 } from "@/generated/api/snippets/snippets";
 import { CodeSnippet } from "@/generated/schemas/orval";
 
-import type { NextPage } from "next";
+import { NextPageWithLayout } from "./_app";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   // ログイン状態を取得する
   const { data: session, status } = useSession();
 
